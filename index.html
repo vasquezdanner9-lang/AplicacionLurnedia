@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lurnedia - Clases a Domicilio en Trujillo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <script>
+    // Configure Tailwind typography and Lurnedia/inDrive inspired dark theme palette
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            limeindrive: '#B8F226',
+            limehover: '#A5DE18',
+            lurnediaGreen: '#22C55E',
+            surfaceDark: '#121212',
+            cardDark: '#1C1D21',
+            elevatedDark: '#26272C',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #090A0C;
+      color: #F8FAFC;
+      overflow-x: hidden;
+    }
+    .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Centered dark mobile viewport shell with zero external bars */
+    .phone-frame {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100dvh;
+      background-color: #121212;
+      position: relative;
+      overflow-x: clip;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.78);
+    }
+    @media (min-width: 640px) {
+      .phone-frame {
+        min-height: 830px;
+        border-radius: 34px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-up { animation: fadeSlideUp 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    @keyframes pulseBeacon {
+      0% { transform: scale(0.8); opacity: 0.9; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+    .beacon-ring { animation: pulseBeacon 2.1s infinite; }
+
+    /* Subtle dark scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #141518; }
+    ::-webkit-scrollbar-thumb { background: #333740; border-radius: 9999px; }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center sm:py-5 px-0 sm:px-4">
+
+  <!-- TOAST NOTIFICATION CONTAINER (NON-BLOCKING UI FEEDBACK) -->
+  <div id="toast-host" class="fixed top-4 left-1/2 -translate-x-1/2 z-[90] flex flex-col gap-2 w-[92%] max-w-[390px] pointer-events-none"></div>
+
+  <!-- MAIN MOBILE APP SHELL -->
+  <div id="app-shell" class="phone-frame flex flex-col">
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 1: INITIAL REGISTRATION ("Haz tu elección. Justa y segura")   -->
+    <!-- ===================================================================== -->
+    <section id="screen-1-register" class="flex-1 flex flex-col justify-between px-5 pt-5 pb-6 bg-[#121212] animate-up">
+      <!-- Top Lurnedia Brand Header -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <!-- Lurnedia Brand Logo: Green gradient speech bubble with stylized "L" on dark -->
+          <svg class="w-9 h-9 shrink-0" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Logo Lurnedia">
+            <defs>
+              <linearGradient id="lurnediaLogoGrad" x1="4" y1="4" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#4ADE80"/>
+                <stop offset="100%" stop-color="#15803D"/>
+              </linearGradient>
+            </defs>
+            <rect x="3" y="3" width="38" height="38" rx="11" fill="url(#lurnediaLogoGrad)"/>
+            <path d="M11 13.5C11 11.567 12.567 10 14.5 10H29.5C31.433 10 33 11.567 33 13.5V24.5C33 26.433 31.433 28 29.5 28H19.5L14 33.5V28H14.5C12.567 28 11 26.433 11 24.5V13.5Z" fill="#0B0F0E"/>
+            <path d="M18.5 14V23H26.5" stroke="#4ADE80" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div>
+            <span class="font-display font-extrabold text-xl tracking-tight text-white">Lurnedia</span>
+            <span class="block text-[10px] font-semibold text-limeindrive">Trujillo · 11 distritos</span>
+          </div>
+        </div>
+        <span id="reg-status-pill" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-full bg-limeindrive/15 text-limeindrive border border-limeindrive/30"></span>
+      </div>
+
+      <!-- Center Trust Shield, Handshake & Check Illustration -->
+      <div class="my-auto py-4 text-center flex flex-col items-center">
+        <svg class="w-44 h-44 mb-5" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M100 18L162 42V96C162 138 135 168 100 182C65 168 38 138 38 96V42L100 18Z" fill="#B8F226"/>
+          <path d="M100 32L148 51V95C148 128 127 152 100 164C73 152 52 128 52 95V51L100 32Z" fill="#121212"/>
+          <circle cx="100" cy="64" r="15" fill="#B8F226"/>
+          <path d="M93.5 64.5L98 69L107.5 59.5" stroke="#121212" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="75" cy="92" r="9" fill="#F8FAFC"/>
+          <path d="M62 128C62 112 72 105 84 108L94 114" stroke="#B8F226" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="125" cy="92" r="9" fill="#F8FAFC"/>
+          <path d="M138 128C138 112 128 105 116 108L106 114" stroke="#F8FAFC" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="100" cy="116" rx="13" ry="8" fill="#B8F226" stroke="#121212" stroke-width="2.5"/>
+          <path d="M91 116L109 116" stroke="#121212" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+
+        <h1 class="font-display font-extrabold text-[27px] leading-[1.15] text-white">
+          Haz tu elección.<br/>Justa y segura
+        </h1>
+        <p class="mt-3 text-sm text-[#D1D5DB] leading-relaxed max-w-[330px]">
+          Define tus condiciones y elige a quién le tienes confianza. Todos los profesores están verificados a ley.
+        </p>
+      </div>
+
+      <!-- Bottom Registration Actions & Legal Links -->
+      <div class="space-y-3">
+        <button type="button" onclick="openRegistrationSheet('google')" class="w-full py-3.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-[#121212] font-bold text-sm flex items-center justify-center gap-2.5 shadow-md transition cursor-pointer">
+          <svg class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.5-1.14 2.77-2.4 3.62v3.01h3.88c2.27-2.09 3.54-5.17 3.54-8.87z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.01c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.21v3.1C3.18 21.3 7.26 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 15.27c-.24-.72-.38-1.49-.38-2.27s.14-1.55.38-2.27V7.63H1.21A11.98 11.98 0 0 0 0 13c0 1.93.46 3.76 1.21 5.37l4.07-3.1z"/>
+            <path fill="#EA4335" d="M12 5.38c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.79 15.24.75 12 .75 7.26.75 3.18 3.45 1.21 7.38l4.07 3.1c.95-2.85 3.6-4.96 6.72-4.96z"/>
+          </svg>
+          <span>Continuar con Google</span>
+        </button>
+
+        <button type="button" onclick="openRegistrationSheet('phone')" class="w-full py-3.5 px-4 rounded-xl bg-[#242529] hover:bg-[#2E3036] text-white font-bold text-sm border border-white/10 transition cursor-pointer">
+          Continuar con el teléfono
+        </button>
+
+        <p class="pt-1 text-[11px] text-[#9CA3AF] text-center leading-relaxed">
+          Al unirte a nuestra aplicación, aceptas nuestros
+          <button type="button" onclick="openInfoModal('terms')" class="underline text-[#D1D5DB] hover:text-white cursor-pointer">Términos de Uso</button>
+          y
+          <button type="button" onclick="openInfoModal('privacy')" class="underline text-[#D1D5DB] hover:text-white cursor-pointer">Política de privacidad</button>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 2: FAST & SECURE PASSKEY / PIN ("Ingreso rápido y seguro con una clave") -->
+    <!-- ===================================================================== -->
+    <section id="screen-2-passkey" class="hidden flex-1 flex flex-col justify-between px-5 pt-5 pb-6 bg-[#121212] animate-up">
+      <!-- Header with Brand Mark -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-green-400 to-green-700 text-[#0B0F0E] font-display font-extrabold text-xs flex items-center justify-center">L</span>
+          <span class="font-display font-bold text-xs text-slate-300">Lurnedia · Seguridad</span>
+        </div>
+        <span id="passkey-saved-badge" class="hidden text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-limeindrive/15 text-limeindrive">PIN activo</span>
+      </div>
+
+      <!-- Center Passkey / Fingerprint Illustration & Explanations -->
+      <div class="my-auto py-4 flex flex-col">
+        <svg class="w-44 h-44 mx-auto mb-5" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="62,28 118,18 136,52 172,64 156,112 168,154 124,168 92,152 54,166 44,122 26,88 58,64" fill="#B8F226"/>
+          <rect x="74" y="42" width="56" height="96" rx="11" fill="#121212" stroke="#121212" stroke-width="3"/>
+          <rect x="78" y="46" width="48" height="88" rx="8" fill="#B8F226"/>
+          <path d="M94 74C94 69 98 66 102 66C106 66 110 69 110 74" stroke="#121212" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M91 80C91 71 96 63 102 63C108 63 113 71 113 80" stroke="#121212" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M97 76V86C97 89 99 91 102 91" stroke="#121212" stroke-width="2.4" stroke-linecap="round"/>
+          <rect x="88" y="102" width="28" height="14" rx="5" fill="#121212"/>
+          <circle cx="102" cy="109" r="2.2" fill="#B8F226"/>
+          <path d="M56 124C64 114 74 112 80 116L84 134L66 154L46 142Z" fill="#F8FAFC" stroke="#121212" stroke-width="3" stroke-linejoin="round"/>
+        </svg>
+
+        <h2 class="font-display font-extrabold text-[26px] leading-[1.15] text-white">
+          Ingreso rápido y seguro<br/>con una clave
+        </h2>
+        <p class="mt-2 text-sm text-[#D1D5DB]">
+          Ya no hay que esperar el código
+        </p>
+
+        <div class="mt-5 space-y-4">
+          <div class="flex items-start gap-3.5">
+            <div class="w-8 h-8 rounded-lg bg-[#232429] border border-white/10 flex items-center justify-center shrink-0 mt-0.5 text-limeindrive">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 11c0-1.66 1.34-3 3-3s3 1.34 3 3v2c0 3.31-2.69 6-6 6s-6-2.69-6-6v-2c0-2.76 2.24-5 5-5"/>
+                <path d="M12 15v-4"/>
+              </svg>
+            </div>
+            <p class="text-xs sm:text-[13px] text-[#E5E7EB] leading-snug">
+              Ingresa con tu huella digital, rostro, PIN o patrón. No recolectamos ninguno de estos datos
+            </p>
+          </div>
+
+          <div class="flex items-start gap-3.5">
+            <div class="w-8 h-8 rounded-lg bg-[#232429] border border-white/10 flex items-center justify-center shrink-0 mt-0.5 text-limeindrive">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 3l7 3v6c0 4.5-3 8.2-7 9.5-4-1.3-7-5-7-9.5V6l7-3z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+            </div>
+            <p class="text-xs sm:text-[13px] text-[#E5E7EB] leading-snug">
+              La clave es más segura, solo se guarda en la cuenta de tu dispositivo
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Actions: Crear clave & Omitir -->
+      <div class="space-y-3">
+        <button type="button" onclick="openPinModal()" class="w-full py-3.5 px-4 rounded-xl bg-limeindrive hover:bg-limehover text-[#121212] font-bold text-sm shadow-lg transition cursor-pointer">
+          Crear clave
+        </button>
+        <button type="button" onclick="navigateToScreen('screen-3-location')" class="w-full py-3.5 px-4 rounded-xl bg-[#25262B] hover:bg-[#2F3137] text-white font-bold text-sm transition cursor-pointer">
+          Omitir
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 3: LOCATION PERMISSION ("Permite que la app acceda a tu ubicación") -->
+    <!-- ===================================================================== -->
+    <section id="screen-3-location" class="hidden flex-1 flex flex-col justify-between pb-6 bg-[#121212] animate-up">
+      <!-- Top Bar -->
+      <div class="px-4 pt-4 pb-3 flex items-center justify-between border-b border-white/5">
+        <button type="button" onclick="openDrawer()" aria-label="Abrir menú" class="w-9 h-9 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition cursor-pointer">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <span class="font-display font-bold text-base text-white">Ciudad · Trujillo</span>
+        <span class="w-9 h-9 flex items-center justify-end">
+          <span class="w-2.5 h-2.5 rounded-full bg-limeindrive"></span>
+        </span>
+      </div>
+
+      <!-- Center Map & Student Pin Illustration -->
+      <div class="my-auto px-5 py-4 flex flex-col">
+        <svg class="w-48 h-48 mx-auto mb-5" viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="48,26 168,20 184,78 170,158 52,166 36,104" fill="#B8F226"/>
+          <path d="M55 58L168 48M48 98L175 90M58 138L165 132M86 30L78 160M136 26L144 158" stroke="#121212" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="68" cy="64" r="14" fill="#FFFFFF" stroke="#121212" stroke-width="2.5"/>
+          <path d="M63 66L65 60H71L73 66M62 66H74V70H62V66Z" fill="#121212"/>
+          <circle cx="152" cy="84" r="14" fill="#FFFFFF" stroke="#121212" stroke-width="2.5"/>
+          <path d="M148 80H156V90H148V80Z" fill="#121212"/>
+          <circle cx="64" cy="126" r="13" fill="#FFFFFF" stroke="#121212" stroke-width="2.5"/>
+          <path d="M60 123H68V130H60V123Z" fill="#121212"/>
+          <path d="M126 24C116 24 108 32 108 42C108 55 126 70 126 70C126 70 144 55 144 42C144 32 136 24 126 24Z" fill="#121212"/>
+          <circle cx="126" cy="42" r="6" fill="#FFFFFF"/>
+          <circle cx="106" cy="76" r="9" fill="#FFFFFF" stroke="#121212" stroke-width="2.5"/>
+          <path d="M93 114L97 88H117L121 114H93Z" fill="#B8F226" stroke="#121212" stroke-width="2.8" stroke-linejoin="round"/>
+          <path d="M96 114L91 154H101L106 126L112 154H122L118 114" fill="#121212" stroke="#121212" stroke-width="2.5" stroke-linejoin="round"/>
+          <rect x="116" y="84" width="12" height="19" rx="3" fill="#121212" stroke="#FFFFFF" stroke-width="1.8"/>
+        </svg>
+
+        <h2 class="font-display font-extrabold text-[26px] leading-[1.15] text-white">
+          Permite que la aplicación<br/>acceda a tu ubicación
+        </h2>
+        <p class="mt-3 text-xs sm:text-[13px] text-[#D1D5DB] leading-relaxed">
+          Necesitamos saber tu ubicación para encontrar profesores verificados cercanos en Trujillo y sus 11 distritos, calcular el tiempo estimado de llegada y garantizar tu seguridad en clases a domicilio.
+        </p>
+      </div>
+
+      <!-- Bottom Location Actions -->
+      <div class="px-5 space-y-3">
+        <button type="button" onclick="enableTrujilloLocation()" class="w-full py-3.5 px-4 rounded-xl bg-limeindrive hover:bg-limehover text-[#121212] font-bold text-sm shadow-lg transition cursor-pointer">
+          Activar los servicios de localización
+        </button>
+        <button type="button" onclick="navigateToScreen('screen-4-map')" class="w-full py-3.5 px-4 rounded-xl bg-[#25262B] hover:bg-[#2F3137] text-white font-bold text-sm transition cursor-pointer">
+          Omitir
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 4: MAIN MAP & LIVE BIDDING IN TRUJILLO (11 DISTRICTS)         -->
+    <!-- ===================================================================== -->
+    <section id="screen-4-map" class="hidden flex-1 flex flex-col bg-[#121212] animate-up">
+
+      <!-- TOP INTERACTIVE MAP OF TRUJILLO -->
+      <div class="relative w-full h-[335px] bg-[#181A20] overflow-hidden shrink-0 select-none">
+        <svg id="trujillo-map" viewBox="0 0 430 335" class="w-full h-full">
+          <defs>
+            <pattern id="trujilloGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#262B35" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="430" height="335" fill="#17191F" />
+          <rect width="430" height="335" fill="url(#trujilloGrid)" />
+
+          <!-- Blocks & green spaces -->
+          <rect x="28" y="32" width="76" height="50" rx="7" fill="#20242D" />
+          <rect x="122" y="36" width="84" height="46" rx="7" fill="#222731" />
+          <rect x="226" y="28" width="92" height="52" rx="7" fill="#20242D" />
+          <rect x="34" y="102" width="70" height="58" rx="7" fill="#222731" />
+          <rect x="242" y="168" width="84" height="54" rx="7" fill="#20242D" />
+          <circle cx="88" cy="196" r="18" fill="#1A2E23" />
+
+          <!-- Main Trujillo avenues -->
+          <path d="M0,92 L430,84" stroke="#303644" stroke-width="5.5" />
+          <path d="M0,166 L430,158" stroke="#394050" stroke-width="7" />
+          <path d="M0,240 L430,232" stroke="#303644" stroke-width="5" />
+          <path d="M114,0 L122,335" stroke="#303644" stroke-width="5.5" />
+          <path d="M215,0 L207,335" stroke="#394050" stroke-width="6.5" />
+          <path d="M328,0 L322,335" stroke="#303644" stroke-width="5" />
+
+          <text x="16" y="85" fill="#7D8596" font-size="9" font-weight="600">Av. César Vallejo</text>
+          <text x="234" y="153" fill="#8C95A8" font-size="9.5" font-weight="700">Av. Larco / España</text>
+
+          <!-- All 11 Districts of Trujillo clickable nodes -->
+          <g class="cursor-pointer" onclick="setDistrictLocation('Huanchaco')"><circle cx="48" cy="42" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="57" y="45" fill="#A3ACBD" font-size="8" font-weight="700">Huanchaco</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('La Esperanza')"><circle cx="152" cy="24" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="161" y="27" fill="#A3ACBD" font-size="8" font-weight="700">La Esperanza</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('Florencia de Mora')"><circle cx="262" cy="22" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="271" y="25" fill="#A3ACBD" font-size="8" font-weight="700">Florencia</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('El Porvenir')"><circle cx="368" cy="48" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="328" y="62" fill="#A3ACBD" font-size="8" font-weight="700">El Porvenir</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('Trujillo Centro')"><circle cx="212" cy="118" r="5.5" fill="#121212" stroke="#B8F226" stroke-width="2"/><text x="221" y="121" fill="#F8FAFC" font-size="8.5" font-weight="800">Trujillo Centro</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('Víctor Larco Herrera')"><circle cx="62" cy="142" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="14" y="156" fill="#A3ACBD" font-size="8" font-weight="700">Víctor Larco</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('Laredo')"><circle cx="378" cy="120" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="372" y="134" fill="#A3ACBD" font-size="8" font-weight="700">Laredo</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('Simbal')"><circle cx="394" cy="186" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="380" y="200" fill="#A3ACBD" font-size="8" font-weight="700">Simbal</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('Poroto')"><circle cx="382" cy="256" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="370" y="270" fill="#A3ACBD" font-size="8" font-weight="700">Poroto</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('Moche')"><circle cx="152" cy="260" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="161" y="263" fill="#A3ACBD" font-size="8" font-weight="700">Moche</text></g>
+          <g class="cursor-pointer" onclick="setDistrictLocation('Salaverry')"><circle cx="268" cy="272" r="5" fill="#121212" stroke="#B8F226" stroke-width="1.8"/><text x="277" y="275" fill="#A3ACBD" font-size="8" font-weight="700">Salaverry</text></g>
+
+          <!-- Central Pin -->
+          <g id="student-map-pin" transform="translate(212, 158)">
+            <circle cx="0" cy="18" r="15" fill="rgba(184, 242, 38, 0.22)" />
+            <circle cx="0" cy="18" r="5" fill="#B8F226" stroke="#121212" stroke-width="1.6" />
+            <rect x="-17" y="-17" width="34" height="26" rx="8" fill="#FFFFFF" stroke="#121212" stroke-width="2.2" />
+            <circle cx="0" cy="-6" r="4" fill="#121212" />
+            <path d="M-7 5C-7 0 7 0 7 5" stroke="#121212" stroke-width="2.3" stroke-linecap="round" fill="none" />
+          </g>
+        </svg>
+
+        <!-- Top-Left Circular Menu Button with Notification Badge -->
+        <button type="button" onclick="openDrawer()" aria-label="Abrir menú lateral" class="absolute top-3.5 left-3.5 z-20 w-11 h-11 rounded-full bg-[#24252A]/95 hover:bg-[#303239] text-white border border-white/10 shadow-xl flex items-center justify-center transition cursor-pointer">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+          </svg>
+          <span class="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+        </button>
+
+        <!-- Top-Right Lurnedia Badge -->
+        <div class="absolute top-3.5 right-3.5 z-20 bg-[#18191D]/90 border border-white/10 rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-lg">
+          <span class="w-4 h-4 rounded bg-gradient-to-br from-green-400 to-green-700 text-[#0B0F0E] font-display font-extrabold text-[10px] flex items-center justify-center">L</span>
+          <span class="font-display font-bold text-[11px] text-white">Lurnedia</span>
+        </div>
+
+        <!-- Floating "De dónde" Bubble -->
+        <button type="button" onclick="openLocationModal()" class="absolute top-16 left-1/2 -translate-x-1/2 z-20 bg-[#1B1C20]/95 hover:bg-[#25272D] border border-white/15 rounded-2xl px-4 py-2 shadow-2xl flex items-center gap-3 min-w-[225px] max-w-[82%] text-left transition cursor-pointer">
+          <div class="min-w-0 flex-1">
+            <span class="block text-[10px] text-[#9CA3AF] leading-tight">De dónde</span>
+            <span id="map-street-label" class="block text-sm font-bold text-white truncate">Calle Las Baritinas</span>
+            <span id="map-district-label" class="block text-[10px] font-bold text-limeindrive truncate">Trujillo Centro</span>
+          </div>
+          <span class="text-slate-400 text-base font-bold">›</span>
+        </button>
+
+        <!-- Bottom-Right Recenter Button -->
+        <button type="button" onclick="recenterMap()" title="Centrar ubicación" class="absolute bottom-6 right-3.5 z-20 w-11 h-11 rounded-full bg-[#24252A]/95 hover:bg-[#303239] text-white border border-white/10 shadow-xl flex items-center justify-center transition cursor-pointer">
+          <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- DARK BOTTOM SHEET -->
+      <div class="-mt-4 relative z-10 flex-1 bg-[#141518] rounded-t-[26px] border-t border-white/10 px-4 pt-2.5 pb-7 space-y-3.5">
+        <div class="w-10 h-1 rounded-full bg-white/25 mx-auto"></div>
+
+        <!-- DEFAULT STUDENT SHEET -->
+        <div id="student-default-panel" class="space-y-3.5">
+          <!-- Main Prompt Bar -->
+          <button type="button" onclick="openRequestModal()" class="w-full bg-[#26272C] hover:bg-[#2F3137] border border-white/10 rounded-2xl px-4 py-3.5 flex items-center gap-3 text-left shadow-md transition cursor-pointer">
+            <svg class="w-5 h-5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/>
+            </svg>
+            <span class="font-display font-bold text-[15px] text-white flex-1">¿Qué curso y por cuánto?</span>
+            <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-limeindrive text-[#121212]">Pedir</span>
+          </button>
+
+          <!-- Quick Course Pills -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1">
+            <button type="button" onclick="openRequestModal('Matemática', 'Secundaria', 45)" class="px-3 py-1.5 rounded-full bg-[#232429] hover:bg-[#2E3037] border border-white/10 text-xs font-bold text-white whitespace-nowrap transition cursor-pointer">Matemática</button>
+            <button type="button" onclick="openRequestModal('Física', 'Preuniversitario', 50)" class="px-3 py-1.5 rounded-full bg-[#232429] hover:bg-[#2E3037] border border-white/10 text-xs font-bold text-white whitespace-nowrap transition cursor-pointer">Física</button>
+            <button type="button" onclick="openRequestModal('Química', 'Preuniversitario', 50)" class="px-3 py-1.5 rounded-full bg-[#232429] hover:bg-[#2E3037] border border-white/10 text-xs font-bold text-white whitespace-nowrap transition cursor-pointer">Química</button>
+            <button type="button" onclick="openRequestModal('Inglés', 'Escolar / Conversación', 45)" class="px-3 py-1.5 rounded-full bg-[#232429] hover:bg-[#2E3037] border border-white/10 text-xs font-bold text-white whitespace-nowrap transition cursor-pointer">Inglés</button>
+            <button type="button" onclick="openRequestModal('Programación', 'Universitario', 65)" class="px-3 py-1.5 rounded-full bg-[#232429] hover:bg-[#2E3037] border border-white/10 text-xs font-bold text-white whitespace-nowrap transition cursor-pointer">Programación</button>
+            <button type="button" onclick="openRequestModal('Comunicación', 'Primaria / Secundaria', 40)" class="px-3 py-1.5 rounded-full bg-[#232429] hover:bg-[#2E3037] border border-white/10 text-xs font-bold text-white whitespace-nowrap transition cursor-pointer">Comunicación</button>
+          </div>
+
+          <!-- Modality Cards Grid -->
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" onclick="openRequestModal('Matemática', 'A domicilio', 50)" class="bg-[#232429] hover:bg-[#2B2D33] border border-white/5 rounded-2xl p-4 text-left flex flex-col justify-between min-h-[144px] transition cursor-pointer">
+              <span class="font-display font-bold text-sm text-white">A domicilio</span>
+              <div class="flex items-end justify-between mt-3">
+                <span class="text-[11px] text-slate-400">Pon tu precio</span>
+                <div class="w-11 h-11 rounded-2xl bg-limeindrive text-[#121212] flex items-center justify-center shadow-md">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                    <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-9.5z"/>
+                  </svg>
+                </div>
+              </div>
+            </button>
+
+            <div class="flex flex-col gap-3">
+              <button type="button" onclick="openRequestModal('Refuerzo / Tareas', 'Escolar', 40)" class="bg-[#232429] hover:bg-[#2B2D33] border border-white/5 rounded-2xl p-3.5 text-left relative transition cursor-pointer">
+                <span class="absolute top-2.5 right-2.5 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-rose-600 text-white">NEW</span>
+                <span class="font-display font-bold text-xs sm:text-sm text-white block pr-12">Refuerzo / Tareas</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">Tareas y nivelación</span>
+              </button>
+
+              <div class="grid grid-cols-2 gap-2.5 flex-1">
+                <button type="button" onclick="openRequestModal('Física y Química', 'Grupal / Academia', 55)" class="bg-[#232429] hover:bg-[#2B2D33] border border-white/5 rounded-2xl p-2.5 text-left flex flex-col justify-between transition cursor-pointer">
+                  <span class="font-display font-bold text-[11px] text-white leading-tight">Grupal / Academia</span>
+                  <span class="text-[10px] font-bold text-limeindrive self-end">UNT/UPAO</span>
+                </button>
+                <button type="button" onclick="openRequestModal('Asesoría Académica', '1 a 1', 60)" class="bg-[#232429] hover:bg-[#2B2D33] border border-white/5 rounded-2xl p-2.5 text-left flex flex-col justify-between transition cursor-pointer">
+                  <span class="font-display font-bold text-[11px] text-white leading-tight">Asesoría</span>
+                  <span class="text-[10px] font-bold text-limeindrive self-end">Verificada</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <p class="pt-2 text-center text-[11px] text-[#9CA3AF]">app en mantenimiento por el programador : Danner Vasquez</p>
+        </div>
+
+        <!-- LIVE BIDDING OFFERS FEED FROM VERIFIED TEACHERS -->
+        <div id="student-bidding-panel" class="hidden space-y-3">
+          <div class="bg-[#22242A] border border-limeindrive/40 rounded-2xl p-3.5">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-2.5">
+                <div class="relative w-7 h-7 flex items-center justify-center shrink-0">
+                  <span class="absolute inset-0 rounded-full bg-limeindrive/40 beacon-ring"></span>
+                  <span class="relative w-3 h-3 rounded-full bg-limeindrive"></span>
+                </div>
+                <div>
+                  <span class="text-[10px] font-extrabold uppercase tracking-wider text-limeindrive">Ofertas en vivo en Trujillo</span>
+                  <h3 id="live-req-heading" class="font-display font-bold text-sm text-white">Matemática · Secundaria</h3>
+                  <p id="live-req-district" class="text-[11px] text-slate-400">Trujillo Centro</p>
+                </div>
+              </div>
+              <div class="text-right shrink-0">
+                <span class="text-[10px] text-slate-400 block">Tu oferta</span>
+                <span id="live-req-fare" class="font-display font-extrabold text-xl text-limeindrive">S/ 50</span>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="counterOfferFromStudent(5)" class="text-[11px] font-bold px-2.5 py-1.5 rounded-xl bg-[#2E3038] hover:bg-[#383B45] text-limeindrive cursor-pointer">Contraofertar +S/ 5</button>
+                <button type="button" onclick="pushTeacherOffer()" class="text-[11px] font-semibold px-2.5 py-1.5 rounded-xl bg-[#16171B] hover:bg-[#2A2C33] text-slate-300 border border-white/10 cursor-pointer">+ Oferta profe</button>
+              </div>
+              <button type="button" onclick="cancelRequest()" class="text-[11px] font-bold text-rose-400 hover:text-rose-300 px-2 py-1 cursor-pointer">Cancelar</button>
+            </div>
+          </div>
+
+          <div id="live-offers-container" class="space-y-2.5 max-h-[290px] overflow-y-auto pr-0.5"></div>
+        </div>
+
+        <!-- CONFIRMED CLASS CARD WITH 4-DIGIT ARRIVAL PIN -->
+        <div id="student-confirmed-panel" class="hidden bg-[#1E2026] border border-limeindrive rounded-2xl overflow-hidden shadow-xl">
+          <div class="bg-limeindrive px-4 py-3 text-[#121212] flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-[#121212] text-limeindrive">Verificado A Ley en camino</span>
+              <h3 class="font-display font-extrabold text-base mt-0.5">Clase Confirmada</h3>
+            </div>
+            <div class="bg-[#121212] text-white px-3 py-1.5 rounded-xl text-center">
+              <span class="text-[9px] uppercase text-slate-400 block">PIN Llegada</span>
+              <span id="confirmed-pin-code" class="font-mono font-extrabold text-base text-limeindrive tracking-widest">4821</span>
+            </div>
+          </div>
+          <div class="p-4 space-y-3">
+            <div id="confirmed-teacher-summary" class="bg-[#26272C] rounded-xl p-3 border border-white/10 text-xs"></div>
+            <div class="flex gap-2">
+              <button type="button" onclick="showToast('PIN y ubicación de clase compartidos con tu contacto de confianza.', 'success')" class="flex-1 py-2.5 px-3 rounded-xl bg-[#2A2C32] hover:bg-[#34373F] text-white font-bold text-xs cursor-pointer">Compartir Seguridad</button>
+              <button type="button" onclick="finishConfirmedClass()" class="flex-1 py-2.5 px-3 rounded-xl bg-limeindrive hover:bg-limehover text-[#121212] font-extrabold text-xs cursor-pointer">Finalizar Clase</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 6: MODO PROFESOR ("Obtén ingresos con nosotros")              -->
+    <!-- ===================================================================== -->
+    <section id="screen-5-teacher" class="hidden flex-1 flex flex-col bg-[#121212] animate-up">
+      <!-- Top Bar -->
+      <div class="px-4 pt-4 pb-3 flex items-center justify-between">
+        <button type="button" onclick="openDrawer()" aria-label="Abrir menú" class="w-9 h-9 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition cursor-pointer">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="flex items-center gap-1.5">
+          <span class="w-5 h-5 rounded-md bg-gradient-to-br from-green-400 to-green-700 text-[#0B0F0E] font-display font-extrabold text-xs flex items-center justify-center">L</span>
+          <span class="font-display font-bold text-sm text-white">Lurnedia · Modo profesor</span>
+        </div>
+        <button type="button" onclick="openTeacherCredentialsModal()" class="text-[11px] font-bold text-limeindrive hover:underline cursor-pointer">A Ley</button>
+      </div>
+
+      <div class="px-4 pb-8 space-y-4 flex-1 flex flex-col justify-between">
+        <div class="space-y-4">
+          <!-- Green Promotional Banner -->
+          <div class="rounded-2xl bg-[#1D542E] border border-[#2E7D46]/60 p-5 text-white shadow-lg">
+            <h2 class="font-display font-extrabold text-[22px] leading-tight">
+              Obtén ingresos con<br/>nosotros
+            </h2>
+            <ul class="mt-3.5 space-y-2 text-xs sm:text-[13px] font-medium text-white/95">
+              <li class="flex items-center gap-2.5">
+                <span class="w-5 h-5 rounded-md bg-white/15 flex items-center justify-center text-xs">🕒</span>
+                <span>Horarios flexibles</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="w-5 h-5 rounded-md bg-white/15 flex items-center justify-center text-xs">👛</span>
+                <span>Tus precios</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="w-5 h-5 rounded-md bg-white/15 flex items-center justify-center text-xs">%</span>
+                <span>Pagos bajos por el servicio</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Role Selector Cards: Profesor a domicilio & Tutor / Asesor -->
+          <div class="space-y-2.5">
+            <button type="button" id="opt-prof-domicilio" onclick="setTeacherRole('domicilio')" class="w-full bg-[#232429] border-2 border-limeindrive rounded-2xl px-4 py-3.5 flex items-center justify-between text-left transition cursor-pointer">
+              <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-limeindrive/15 text-limeindrive flex items-center justify-center text-xl">👨‍🏫</div>
+                <div>
+                  <span class="font-display font-bold text-sm text-white block">Profesor a domicilio</span>
+                  <span class="text-[11px] text-slate-400">DNI, antecedentes y título verificados · Trujillo</span>
+                </div>
+              </div>
+              <span id="dot-domicilio" class="text-limeindrive font-extrabold text-sm">●</span>
+            </button>
+
+            <button type="button" id="opt-tutor-asesor" onclick="setTeacherRole('asesor')" class="w-full bg-[#232429] border border-white/10 hover:border-white/25 rounded-2xl px-4 py-3.5 flex items-center justify-between text-left transition cursor-pointer">
+              <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-[#2E3038] text-white flex items-center justify-center text-xl">🎓</div>
+                <div>
+                  <span class="font-display font-bold text-sm text-white block">Tutor / Asesor</span>
+                  <span class="text-[11px] text-slate-400">Refuerzo, preuniversitario y asesoría 1 a 1</span>
+                </div>
+              </div>
+              <span id="dot-asesor" class="text-slate-600 font-extrabold text-sm">○</span>
+            </button>
+          </div>
+
+          <!-- Live Teacher Radar & Yape/Plin Wallet Card -->
+          <div class="bg-[#1C1D21] border border-white/10 rounded-2xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Billetera Yape / Plin (Comisión 10%)</span>
+                <span class="font-display font-extrabold text-lg text-white">S/ <span id="wallet-balance-val">45.00</span></span>
+              </div>
+              <button type="button" onclick="rechargeWallet(30)" class="text-xs font-extrabold px-3 py-1.5 rounded-xl bg-limeindrive/15 text-limeindrive border border-limeindrive/30 hover:bg-limeindrive/25 transition cursor-pointer">
+                + Recargar S/ 30
+              </button>
+            </div>
+
+            <div class="border-t border-white/10 pt-3">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-white">Solicitudes en Trujillo</span>
+                <select id="radar-district-select" onchange="renderTeacherRequests()" class="bg-[#26272C] text-[11px] font-semibold text-slate-200 border border-white/10 rounded-lg px-2 py-1">
+                  <option value="ALL">Todos (11 distritos)</option>
+                  <option value="Trujillo Centro">Trujillo Centro</option>
+                  <option value="Víctor Larco Herrera">Víctor Larco Herrera</option>
+                  <option value="La Esperanza">La Esperanza</option>
+                  <option value="El Porvenir">El Porvenir</option>
+                  <option value="Florencia de Mora">Florencia de Mora</option>
+                  <option value="Huanchaco">Huanchaco</option>
+                  <option value="Moche">Moche</option>
+                  <option value="Salaverry">Salaverry</option>
+                  <option value="Laredo">Laredo</option>
+                  <option value="Simbal">Simbal</option>
+                  <option value="Poroto">Poroto</option>
+                </select>
+              </div>
+              <div id="teacher-requests-feed" class="space-y-2 max-h-44 overflow-y-auto"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Action Buttons -->
+        <div class="pt-3 space-y-2.5 text-center">
+          <button type="button" onclick="openTeacherCredentialsModal()" class="w-full py-3.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-[#121212] font-bold text-sm shadow-md transition cursor-pointer">
+            Ya tengo una cuenta
+          </button>
+          <button type="button" onclick="navigateToScreen('screen-4-map')" class="w-full py-2 text-sm font-semibold text-[#D1D5DB] hover:text-white transition cursor-pointer">
+            Ir a modo alumno · Ir a modo pasajero
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 5: SLIDE-OUT USER DRAWER                                      -->
+    <!-- ===================================================================== -->
+    <div id="drawer-backdrop" onclick="closeDrawer()" class="fixed inset-0 z-50 hidden bg-black/75">
+      <aside onclick="event.stopPropagation()" class="w-[82%] max-w-[330px] h-full bg-[#18191D] border-r border-white/10 flex flex-col justify-between overflow-y-auto animate-up">
+        <div>
+          <!-- Profile Header -->
+          <div class="p-4 border-b border-white/10 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-3 min-w-0">
+              <div id="drawer-initials" class="w-12 h-12 rounded-full bg-gradient-to-br from-slate-600 to-slate-800 border border-white/20 flex items-center justify-center font-display font-extrabold text-sm text-white shrink-0">
+                DV
+              </div>
+              <div class="min-w-0">
+                <p id="drawer-profile-name" class="font-display font-bold text-base text-white truncate">Danner</p>
+                <div class="flex items-center gap-1 text-xs mt-0.5">
+                  <span class="text-amber-400 tracking-tight">★★★★★</span>
+                  <span class="font-bold text-white">4.93</span>
+                  <span class="text-slate-400">(8)</span>
+                </div>
+              </div>
+            </div>
+            <button type="button" onclick="closeDrawer()" class="text-slate-400 hover:text-white px-2 py-1 text-base font-bold cursor-pointer">›</button>
+          </div>
+
+          <!-- Educational Navigation Items -->
+          <nav class="py-1.5 text-sm divide-y divide-white/[0.04]">
+            <button type="button" onclick="closeDrawer(); navigateToScreen('screen-4-map');" class="w-full px-4 py-3 bg-[#25262B] text-white font-semibold flex items-center gap-3 text-left cursor-pointer">
+              <span>🏠</span>
+              <span>A domicilio</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); openInfoModal('historial');" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span>🕒</span>
+              <span>Historial de clases</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); openInfoModal('materiales');" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-red-600 text-white">NEW</span>
+              <span>Materiales</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); navigateToScreen('screen-4-map'); openRequestModal('Refuerzo / Tareas', 'Escolar', 40);" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span>📘</span>
+              <span>Refuerzo / Tareas</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); navigateToScreen('screen-4-map'); openRequestModal('Física y Química', 'Grupal / Academia', 55);" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span>👥</span>
+              <span>Grupal / Academia</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); navigateToScreen('screen-4-map'); openRequestModal('Asesoría Académica', '1 a 1', 60);" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span>🎓</span>
+              <span>Asesoría</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); openInfoModal('notificaciones');" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center justify-between text-left transition cursor-pointer">
+              <span class="flex items-center gap-3">
+                <span>🔔</span>
+                <span>Notificaciones</span>
+              </span>
+              <span class="w-5 h-5 rounded-full bg-rose-500 text-white text-[11px] font-extrabold flex items-center justify-center">2</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); openInfoModal('seguridad');" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span>🛡️</span>
+              <span>Seguridad</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); openInfoModal('configuracion');" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span>⚙️</span>
+              <span>Configuración</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); openInfoModal('ayuda');" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span>ℹ️</span>
+              <span>Ayuda</span>
+            </button>
+
+            <button type="button" onclick="closeDrawer(); openInfoModal('soporte');" class="w-full px-4 py-3 hover:bg-[#202227] text-slate-200 font-medium flex items-center gap-3 text-left transition cursor-pointer">
+              <span>💬</span>
+              <span>Soporte</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Bottom Lime-Green "Modo profesor" CTA & Social Icons -->
+        <div class="p-4 pt-3 space-y-4 bg-[#18191D]">
+          <button type="button" onclick="closeDrawer(); navigateToScreen('screen-5-teacher');" class="w-full py-3 px-4 rounded-xl bg-limeindrive hover:bg-limehover text-[#121212] font-display font-bold text-sm shadow-lg transition cursor-pointer">
+            Modo profesor
+          </button>
+
+          <div class="flex items-center justify-center gap-7 text-slate-300 pb-1">
+            <button type="button" onclick="showToast('Lurnedia Trujillo en Facebook (@LurnediaTrujillo)', 'info')" aria-label="Facebook" class="font-display font-extrabold text-xl hover:text-white transition cursor-pointer">f</button>
+            <button type="button" onclick="showToast('Lurnedia Trujillo en Instagram (@lurnedia.pe)', 'info')" aria-label="Instagram" class="text-base font-bold hover:text-white transition cursor-pointer">◎</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODALS                                                                -->
+    <!-- ===================================================================== -->
+
+    <!-- MODAL 1: REGISTRATION FORM (NAME, DNI, PHONE, ROLE & A LEY VERIFICATION) -->
+    <div id="modal-register" class="fixed inset-0 z-[70] hidden bg-black/80 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-[#1C1D21] border border-white/10 rounded-t-3xl sm:rounded-3xl w-full max-w-md p-5 space-y-3.5 animate-up max-h-[92dvh] overflow-y-auto">
+        <div class="flex items-center justify-between">
+          <div>
+            <span id="reg-provider-label" class="text-[10px] font-extrabold uppercase text-limeindrive">Registro Lurnedia</span>
+            <h3 class="font-display font-bold text-lg text-white">Completa tu registro</h3>
+          </div>
+          <button type="button" onclick="closeModal('modal-register')" class="w-8 h-8 rounded-full bg-[#2A2C32] text-slate-300 hover:text-white font-bold cursor-pointer">✕</button>
+        </div>
+
+        <form onsubmit="handleRegistrationSubmit(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Nombre completo *</label>
+            <input type="text" id="input-reg-name" required value="Danner Vásquez" class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2.5 text-sm text-white focus:border-limeindrive focus:outline-none" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">DNI (8 dígitos) *</label>
+              <input type="text" id="input-reg-dni" required pattern="[0-9]{8}" maxlength="8" value="72458910" class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2.5 text-sm font-mono text-white focus:border-limeindrive focus:outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Teléfono / Contacto *</label>
+              <input type="text" id="input-reg-phone" required value="948 555 123" class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2.5 text-sm text-white focus:border-limeindrive focus:outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Perfil en Lurnedia *</label>
+            <select id="input-reg-role" onchange="toggleTeacherALeyFields()" class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2.5 text-sm text-white focus:border-limeindrive focus:outline-none">
+              <option value="alumno">Alumno / Padre de familia</option>
+              <option value="profesor">Profesor / Tutor (Verificación A Ley)</option>
+            </select>
+          </div>
+
+          <!-- Mandatory "A Ley" Verification Box when registering as Teacher -->
+          <div id="reg-aleye-box" class="hidden bg-[#121212] border border-limeindrive/40 rounded-2xl p-3 space-y-2.5">
+            <p class="text-[11px] font-extrabold text-limeindrive uppercase">Verificación obligatoria "A Ley" para profesores</p>
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">Título / Grado / Especialidad *</label>
+              <input type="text" id="input-reg-degree" placeholder="Ej. Lic. Educación Matemática - UNT" class="w-full rounded-xl bg-[#1C1D21] border border-white/10 px-3 py-2 text-xs text-white" />
+            </div>
+            <label class="flex items-start gap-2 text-[11px] text-slate-300 cursor-pointer">
+              <input type="checkbox" id="input-reg-aleye-check" class="mt-0.5 accent-[#B8F226]" />
+              <span>Declaro bajo ley que mi DNI, antecedentes penales/policiales y credenciales académicas están en regla.</span>
+            </label>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-xl bg-limeindrive hover:bg-limehover text-[#121212] font-display font-extrabold text-sm shadow-lg transition cursor-pointer">
+            Continuar →
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL 2: PIN / PASSKEY SETUP -->
+    <div id="modal-pin" class="fixed inset-0 z-[70] hidden bg-black/80 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-[#1C1D21] border border-white/10 rounded-t-3xl sm:rounded-3xl w-full max-w-md p-5 space-y-4 animate-up">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display font-bold text-lg text-white">Crear clave rápida</h3>
+          <button type="button" onclick="closeModal('modal-pin')" class="w-8 h-8 rounded-full bg-[#2A2C32] text-slate-300 font-bold cursor-pointer">✕</button>
+        </div>
+        <p class="text-xs text-slate-400">Elige un PIN numérico de 4 dígitos. Se almacena únicamente en este dispositivo.</p>
+        <form onsubmit="handlePinSave(event)" class="space-y-4">
+          <input type="password" id="input-pin-code" required pattern="[0-9]{4}" maxlength="4" inputmode="numeric" placeholder="••••" class="w-full text-center tracking-[0.65em] font-mono text-2xl rounded-xl bg-[#121212] border border-white/15 py-3 text-limeindrive focus:border-limeindrive focus:outline-none" />
+          <button type="submit" class="w-full py-3.5 rounded-xl bg-limeindrive hover:bg-limehover text-[#121212] font-display font-extrabold text-sm cursor-pointer">
+            Guardar clave y continuar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL 3: LOCATION / DISTRICT PICKER IN TRUJILLO -->
+    <div id="modal-location" class="fixed inset-0 z-[70] hidden bg-black/80 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-[#1C1D21] border border-white/10 rounded-t-3xl sm:rounded-3xl w-full max-w-md p-5 space-y-3.5 animate-up">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display font-bold text-base text-white">Ubicación en Trujillo ("De dónde")</h3>
+          <button type="button" onclick="closeModal('modal-location')" class="w-8 h-8 rounded-full bg-[#2A2C32] text-slate-300 font-bold cursor-pointer">✕</button>
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Dirección / Calle</label>
+          <input type="text" id="input-street-loc" class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2 text-sm text-white" />
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Distrito de Trujillo (11 distritos)</label>
+          <select id="select-district-loc" class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2 text-sm text-white">
+            <option value="Trujillo Centro">Trujillo Centro</option>
+            <option value="Víctor Larco Herrera">Víctor Larco Herrera</option>
+            <option value="La Esperanza">La Esperanza</option>
+            <option value="El Porvenir">El Porvenir</option>
+            <option value="Florencia de Mora">Florencia de Mora</option>
+            <option value="Huanchaco">Huanchaco</option>
+            <option value="Moche">Moche</option>
+            <option value="Salaverry">Salaverry</option>
+            <option value="Laredo">Laredo</option>
+            <option value="Simbal">Simbal</option>
+            <option value="Poroto">Poroto</option>
+          </select>
+        </div>
+        <button type="button" onclick="confirmLocationChange()" class="w-full py-3 rounded-xl bg-limeindrive text-[#121212] font-display font-extrabold text-sm cursor-pointer">
+          Guardar ubicación
+        </button>
+      </div>
+    </div>
+
+    <!-- MODAL 4: COURSE & PRICE REQUEST ("¿Qué curso y por cuánto?") -->
+    <div id="modal-request" class="fixed inset-0 z-[70] hidden bg-black/80 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-[#1C1D21] border border-white/10 rounded-t-3xl sm:rounded-3xl w-full max-w-md p-5 space-y-3.5 animate-up">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display font-bold text-lg text-white">Solicitar clase en Trujillo</h3>
+          <button type="button" onclick="closeModal('modal-request')" class="w-8 h-8 rounded-full bg-[#2A2C32] text-slate-300 font-bold cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="submitClassRequest(event)" class="space-y-3">
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Curso</label>
+              <input type="text" id="req-course-input" required class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2 text-sm text-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Nivel / Modalidad</label>
+              <input type="text" id="req-level-input" required class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2 text-sm text-white" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Distrito</label>
+              <select id="req-district-select" class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2 text-xs sm:text-sm text-white">
+                <option value="Trujillo Centro">Trujillo Centro</option>
+                <option value="Víctor Larco Herrera">Víctor Larco Herrera</option>
+                <option value="La Esperanza">La Esperanza</option>
+                <option value="El Porvenir">El Porvenir</option>
+                <option value="Florencia de Mora">Florencia de Mora</option>
+                <option value="Huanchaco">Huanchaco</option>
+                <option value="Moche">Moche</option>
+                <option value="Salaverry">Salaverry</option>
+                <option value="Laredo">Laredo</option>
+                <option value="Simbal">Simbal</option>
+                <option value="Poroto">Poroto</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Horas</label>
+              <select id="req-hours-select" class="w-full rounded-xl bg-[#121212] border border-white/15 px-3 py-2 text-xs sm:text-sm text-white">
+                <option value="1">1 hora</option>
+                <option value="2" selected>2 horas</option>
+                <option value="3">3 horas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="bg-[#121212] border border-white/10 rounded-2xl p-3.5">
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span class="text-slate-400 font-semibold">¿Por cuánto ofreces? (S/)</span>
+              <span class="text-limeindrive font-bold">Negociación directa</span>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <button type="button" onclick="stepRequestPrice(-5)" class="w-11 h-11 rounded-xl bg-[#26272C] hover:bg-[#32343C] text-white font-display font-extrabold text-lg cursor-pointer">-5</button>
+              <div class="text-center">
+                <span class="font-display font-extrabold text-3xl text-limeindrive">S/ <span id="req-price-val">50</span></span>
+                <input type="hidden" id="req-price-hidden" value="50" />
+              </div>
+              <button type="button" onclick="stepRequestPrice(5)" class="w-11 h-11 rounded-xl bg-[#26272C] hover:bg-[#32343C] text-limeindrive font-display font-extrabold text-lg cursor-pointer">+5</button>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-xl bg-limeindrive hover:bg-limehover text-[#121212] font-display font-extrabold text-sm shadow-lg transition cursor-pointer">
+            Publicar solicitud y ver ofertas
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL 5: TEACHER "A LEY" CREDENTIALS & REVIEWS -->
+    <div id="modal-credentials" class="fixed inset-0 z-[70] hidden bg-black/80 flex items-center justify-center p-4">
+      <div class="bg-[#1C1D21] border border-white/10 rounded-3xl w-full max-w-md p-5 space-y-4 animate-up">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <h3 class="font-display font-bold text-base text-white">Credenciales "A Ley" Verificadas</h3>
+          <button type="button" onclick="closeModal('modal-credentials')" class="w-8 h-8 rounded-full bg-[#2A2C32] text-slate-300 font-bold cursor-pointer">✕</button>
+        </div>
+        <div id="credentials-body" class="space-y-3 text-xs text-slate-300"></div>
+        <button type="button" onclick="closeModal('modal-credentials')" class="w-full py-2.5 rounded-xl bg-limeindrive text-[#121212] font-display font-extrabold text-xs cursor-pointer">Cerrar</button>
+      </div>
+    </div>
+
+    <!-- MODAL 6: DRAWER & LEGAL INFO -->
+    <div id="modal-info" class="fixed inset-0 z-[70] hidden bg-black/80 flex items-center justify-center p-4">
+      <div class="bg-[#1C1D21] border border-white/10 rounded-3xl w-full max-w-md p-5 space-y-4 animate-up">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <h3 id="info-modal-title" class="font-display font-bold text-base text-white">Lurnedia</h3>
+          <button type="button" onclick="closeModal('modal-info')" class="w-8 h-8 rounded-full bg-[#2A2C32] text-slate-300 font-bold cursor-pointer">✕</button>
+        </div>
+        <div id="info-modal-body" class="space-y-2.5 text-xs text-slate-300 leading-relaxed"></div>
+        <button type="button" onclick="closeModal('modal-info')" class="w-full py-2.5 rounded-xl bg-limeindrive text-[#121212] font-display font-extrabold text-xs cursor-pointer">Entendido</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. TRUJILLO 11 DISTRICTS COORDINATES & SEED DATA
+    // =========================================================================
+    const DISTRICTS_MAP = {
+      "Trujillo Centro": { x: 212, y: 158, street: "Calle Las Baritinas" },
+      "Víctor Larco Herrera": { x: 64, y: 142, street: "Av. Víctor Larco Herrera 680" },
+      "La Esperanza": { x: 152, y: 34, street: "Av. José Gabriel Condorcanqui 1240" },
+      "El Porvenir": { x: 368, y: 48, street: "Av. Sánchez Carrión 910" },
+      "Florencia de Mora": { x: 262, y: 32, street: "Calle 2 de Mayo 415" },
+      "Huanchaco": { x: 48, y: 42, street: "Av. La Ribera 320" },
+      "Moche": { x: 152, y: 260, street: "Plaza Mayor de Moche 110" },
+      "Salaverry": { x: 268, y: 272, street: "Av. Marina 245" },
+      "Laredo": { x: 378, y: 120, street: "Av. Trujillo 502" },
+      "Simbal": { x: 394, y: 186, street: "Calle Principal Simbal 85" },
+      "Poroto": { x: 382, y: 256, street: "Jr. Unión Poroto 120" }
+    };
+
+    const TEACHERS_POOL = [
+      {
+        id: "t-1",
+        name: "Ing. Carlos Rojas",
+        dni: "45891234",
+        district: "Trujillo Centro",
+        credential: "Ing. Civil (UNT) · Antecedentes limpios",
+        subjects: "Matemática · Física",
+        rating: 4.96,
+        reviews: 148,
+        eta: "12 min",
+        distance: "1.2 km",
+        quote: "Excelente alumno en Trujillo, muy puntual con sus clases."
+      },
+      {
+        id: "t-2",
+        name: "Lic. Valeria Valverde",
+        dni: "70458912",
+        district: "Víctor Larco Herrera",
+        credential: "Lic. Educación (UNT) · Certificado vigente",
+        subjects: "Refuerzo / Tareas · Inglés · Comunicación",
+        rating: 4.93,
+        reviews: 96,
+        eta: "16 min",
+        distance: "2.1 km",
+        quote: "Clases dinámicas a domicilio con material impreso."
+      },
+      {
+        id: "t-3",
+        name: "Bach. Diego Salazar",
+        dni: "47120988",
+        district: "La Esperanza",
+        credential: "Química / Ciencias (UNT) · Verificado A Ley",
+        subjects: "Química · Física · Programación",
+        rating: 4.91,
+        reviews: 74,
+        eta: "18 min",
+        distance: "2.7 km",
+        quote: "Preparación práctica para exámenes y nivelación."
+      }
+    ];
+
+    const SAMPLE_REQUESTS = [
+      { id: "RQ-1", course: "Física", level: "Preuniversitario", district: "La Esperanza", hours: 2, price: 45 },
+      { id: "RQ-2", course: "Inglés", level: "Escolar / Conversación", district: "Huanchaco", hours: 2, price: 50 },
+      { id: "RQ-3", course: "Programación", level: "Universitario", district: "Víctor Larco Herrera", hours: 2, price: 65 },
+      { id: "RQ-4", course: "Refuerzo / Tareas", level: "Escolar", district: "El Porvenir", hours: 1, price: 35 }
+    ];
+
+    // =========================================================================
+    // 2. APPLICATION STATE
+    // =========================================================================
+    const state = {
+      screen: "screen-1-register",
+      user: null,
+      pin: "",
+      locationActive: false,
+      street: "Calle Las Baritinas",
+      district: "Trujillo Centro",
+      teacherRole: "domicilio",
+      wallet: 45.00,
+      activeRequest: null,
+      offers: [],
+      confirmedClass: null,
+      history: [
+        { course: "Matemática · Secundaria", district: "Trujillo Centro", price: "S/ 45", date: "Ayer" },
+        { course: "Inglés · Conversación", district: "Víctor Larco Herrera", price: "S/ 50", date: "14 Nov" }
+      ]
+    };
+
+    // =========================================================================
+    // 3. SCREEN NAVIGATION & IDENTITY SYNC
+    // =========================================================================
+    function navigateToScreen(targetId) {
+      const screens = [
+        "screen-1-register",
+        "screen-2-passkey",
+        "screen-3-location",
+        "screen-4-map",
+        "screen-5-teacher"
+      ];
+      state.screen = targetId;
+
+      screens.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (id === targetId) el.classList.remove("hidden");
+        else el.classList.add("hidden");
+      });
+
+      syncUserProfileUI();
+
+      if (targetId === "screen-4-map") {
+        setDistrictLocation(state.district, false);
+        renderStudentPanels();
+      }
+      if (targetId === "screen-5-teacher") {
+        document.getElementById("wallet-balance-val").textContent = state.wallet.toFixed(2);
+        renderTeacherRequests();
+      }
+    }
+
+    function syncUserProfileUI() {
+      const fullName = state.user?.name || "Danner";
+      const firstName = fullName.split(" ")[0];
+      const initials = fullName.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase() || "DV";
+
+      document.getElementById("drawer-profile-name").textContent = firstName;
+      document.getElementById("drawer-initials").textContent = initials;
+
+      const regPill = document.getElementById("reg-status-pill");
+      if (state.user) {
+        regPill.textContent = `✓ ${firstName}`;
+        regPill.classList.remove("hidden");
+      } else {
+        regPill.classList.add("hidden");
+      }
+
+      const pinBadge = document.getElementById("passkey-saved-badge");
+      if (state.pin) pinBadge.classList.remove("hidden");
+      else pinBadge.classList.add("hidden");
+    }
+
+    // =========================================================================
+    // 4. REGISTRATION & PASSKEY FLOWS
+    // =========================================================================
+    function openRegistrationSheet(provider) {
+      document.getElementById("reg-provider-label").textContent =
+        provider === "google" ? "Registro con Google · Lurnedia" : "Registro con Teléfono · Lurnedia";
+      toggleTeacherALeyFields();
+      document.getElementById("modal-register").classList.remove("hidden");
+    }
+
+    function toggleTeacherALeyFields() {
+      const role = document.getElementById("input-reg-role").value;
+      const box = document.getElementById("reg-aleye-box");
+      if (role === "profesor") box.classList.remove("hidden");
+      else box.classList.add("hidden");
+    }
+
+    function handleRegistrationSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("input-reg-name").value.trim();
+      const dni = document.getElementById("input-reg-dni").value.trim();
+      const phone = document.getElementById("input-reg-phone").value.trim();
+      const role = document.getElementById("input-reg-role").value;
+      const degree = document.getElementById("input-reg-degree").value.trim();
+      const aleyChecked = document.getElementById("input-reg-aleye-check").checked;
+
+      if (role === "profesor" && (!degree || !aleyChecked)) {
+        showToast("Completa tu respaldo académico y acepta la declaración A Ley.", "warning");
+        return;
+      }
+
+      state.user = { name, dni, phone, role, degree };
+      closeModal("modal-register");
+      showToast(`Bienvenido a Lurnedia, ${name.split(" ")[0]}.`, "success");
+      navigateToScreen("screen-2-passkey");
+    }
+
+    function openPinModal() {
+      document.getElementById("input-pin-code").value = state.pin || "";
+      document.getElementById("modal-pin").classList.remove("hidden");
+    }
+
+    function handlePinSave(e) {
+      e.preventDefault();
+      const pinVal = document.getElementById("input-pin-code").value.trim();
+      if (!/^\d{4}$/.test(pinVal)) {
+        showToast("Ingresa un PIN numérico de 4 dígitos.", "warning");
+        return;
+      }
+      state.pin = pinVal;
+      closeModal("modal-pin");
+      showToast("Clave rápida guardada en tu dispositivo.", "success");
+      navigateToScreen("screen-3-location");
+    }
+
+    // =========================================================================
+    // 5. LOCATION PERMISSION & TRUJILLO MAP
+    // =========================================================================
+    function enableTrujilloLocation() {
+      state.locationActive = true;
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          () => {
+            showToast(`Ubicación activada en ${state.district}, Trujillo.`, "success");
+            navigateToScreen("screen-4-map");
+          },
+          () => {
+            showToast(`Ubicación configurada en ${state.street}, ${state.district}.`, "info");
+            navigateToScreen("screen-4-map");
+          },
+          { timeout: 2200 }
+        );
+      } else {
+        showToast(`Ubicación configurada en ${state.district}.`, "success");
+        navigateToScreen("screen-4-map");
+      }
+    }
+
+    function setDistrictLocation(districtName, notify = true) {
+      state.district = districtName;
+      const info = DISTRICTS_MAP[districtName];
+      if (info) {
+        state.street = info.street;
+        const pinEl = document.getElementById("student-map-pin");
+        if (pinEl) pinEl.setAttribute("transform", `translate(${info.x}, ${info.y})`);
+      }
+      document.getElementById("map-street-label").textContent = state.street;
+      document.getElementById("map-district-label").textContent = state.district;
+      if (notify) showToast(`Ubicación: ${state.street} · ${state.district}`, "info");
+    }
+
+    function recenterMap() {
+      setDistrictLocation(state.district, true);
+    }
+
+    function openLocationModal() {
+      document.getElementById("input-street-loc").value = state.street;
+      document.getElementById("select-district-loc").value = state.district;
+      document.getElementById("modal-location").classList.remove("hidden");
+    }
+
+    function confirmLocationChange() {
+      const streetVal = document.getElementById("input-street-loc").value.trim() || "Calle Las Baritinas";
+      const distVal = document.getElementById("select-district-loc").value;
+      state.street = streetVal;
+      state.district = distVal;
+      setDistrictLocation(distVal, false);
+      document.getElementById("map-street-label").textContent = streetVal;
+      closeModal("modal-location");
+      showToast(`Punto actualizado en ${distVal}.`, "success");
+    }
+
+    // =========================================================================
+    // 6. STUDENT REQUESTS & LIVE TEACHER BIDS
+    // =========================================================================
+    function openRequestModal(course = "Matemática", level = "A domicilio", price = 50) {
+      document.getElementById("req-course-input").value = course;
+      document.getElementById("req-level-input").value = level;
+      document.getElementById("req-district-select").value = state.district;
+      document.getElementById("req-price-hidden").value = price;
+      document.getElementById("req-price-val").textContent = price;
+      document.getElementById("modal-request").classList.remove("hidden");
+    }
+
+    function stepRequestPrice(delta) {
+      const hidden = document.getElementById("req-price-hidden");
+      const next = Math.max(15, parseInt(hidden.value, 10) + delta);
+      hidden.value = next;
+      document.getElementById("req-price-val").textContent = next;
+    }
+
+    function submitClassRequest(e) {
+      e.preventDefault();
+      state.activeRequest = {
+        id: "RQ-" + Math.floor(1000 + Math.random() * 8999),
+        course: document.getElementById("req-course-input").value.trim(),
+        level: document.getElementById("req-level-input").value.trim(),
+        district: document.getElementById("req-district-select").value,
+        hours: parseInt(document.getElementById("req-hours-select").value, 10),
+        price: parseInt(document.getElementById("req-price-hidden").value, 10)
+      };
+      state.offers = [];
+      state.confirmedClass = null;
+      closeModal("modal-request");
+      renderStudentPanels();
+      showToast(`Solicitud publicada en ${state.activeRequest.district}. Recibiendo ofertas...`, "success");
+
+      setTimeout(() => pushTeacherOffer(0), 850);
+      setTimeout(() => pushTeacherOffer(1), 2100);
+    }
+
+    function pushTeacherOffer(forcedIdx = null) {
+      if (!state.activeRequest || state.confirmedClass) return;
+      const candidate = forcedIdx !== null && TEACHERS_POOL[forcedIdx]
+        ? TEACHERS_POOL[forcedIdx]
+        : TEACHERS_POOL[Math.floor(Math.random() * TEACHERS_POOL.length)];
+
+      if (state.offers.some(o => o.teacherId === candidate.id)) return;
+
+      const diffs = [0, 0, 5, 10];
+      const bidAmount = state.activeRequest.price + diffs[Math.floor(Math.random() * diffs.length)];
+
+      state.offers.unshift({
+        offerId: "OF-" + Date.now() + Math.floor(Math.random() * 99),
+        teacherId: candidate.id,
+        price: bidAmount,
+        eta: candidate.eta,
+        distance: candidate.distance
+      });
+      renderStudentPanels();
+      showToast(`${candidate.name} ofertó S/ ${bidAmount}`, "success");
+    }
+
+    function counterOfferFromStudent(addSoles) {
+      if (!state.activeRequest) return;
+      state.activeRequest.price += addSoles;
+      renderStudentPanels();
+      showToast(`Contraoferta enviada: S/ ${state.activeRequest.price}`, "info");
+    }
+
+    function cancelRequest() {
+      state.activeRequest = null;
+      state.offers = [];
+      state.confirmedClass = null;
+      renderStudentPanels();
+      showToast("Solicitud cancelada.", "info");
+    }
+
+    function acceptOffer(offerId) {
+      const offer = state.offers.find(o => o.offerId === offerId);
+      if (!offer || !state.activeRequest) return;
+      const teacher = TEACHERS_POOL.find(t => t.id === offer.teacherId) || TEACHERS_POOL[0];
+
+      state.confirmedClass = {
+        request: state.activeRequest,
+        offer,
+        teacher,
+        pin: String(Math.floor(1000 + Math.random() * 9000))
+      };
+      renderStudentPanels();
+      showToast(`Aceptaste a ${teacher.name}. PIN de llegada: ${state.confirmedClass.pin}`, "success");
+    }
+
+    function finishConfirmedClass() {
+      if (state.confirmedClass) {
+        state.history.unshift({
+          course: `${state.confirmedClass.request.course} · ${state.confirmedClass.request.level}`,
+          district: state.confirmedClass.request.district,
+          price: `S/ ${state.confirmedClass.offer.price}`,
+          date: "Hoy"
+        });
+      }
+      state.activeRequest = null;
+      state.offers = [];
+      state.confirmedClass = null;
+      renderStudentPanels();
+      showToast("Clase finalizada en Trujillo.", "success");
+    }
+
+    function renderStudentPanels() {
+      const defPanel = document.getElementById("student-default-panel");
+      const bidPanel = document.getElementById("student-bidding-panel");
+      const confPanel = document.getElementById("student-confirmed-panel");
+
+      defPanel.classList.add("hidden");
+      bidPanel.classList.add("hidden");
+      confPanel.classList.add("hidden");
+
+      if (state.confirmedClass) {
+        confPanel.classList.remove("hidden");
+        const { teacher, offer, request, pin } = state.confirmedClass;
+        document.getElementById("confirmed-pin-code").textContent = pin;
+        document.getElementById("confirmed-teacher-summary").innerHTML = `
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <p class="font-display font-bold text-sm text-white">${teacher.name}</p>
+              <p class="text-[11px] text-limeindrive font-semibold">✓ Verificado A Ley · DNI ${teacher.dni} · ${offer.eta}</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">${request.course} (${request.level}) · ${request.district}</p>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] text-slate-400 block">Tarifa</span>
+              <span class="font-display font-extrabold text-xl text-limeindrive">S/ ${offer.price}</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      if (state.activeRequest) {
+        bidPanel.classList.remove("hidden");
+        document.getElementById("live-req-heading").textContent = `${state.activeRequest.course} · ${state.activeRequest.level}`;
+        document.getElementById("live-req-district").textContent = `${state.activeRequest.district} · ${state.activeRequest.hours}h`;
+        document.getElementById("live-req-fare").textContent = `S/ ${state.activeRequest.price}`;
+
+        const listEl = document.getElementById("live-offers-container");
+        if (state.offers.length === 0) {
+          listEl.innerHTML = `<div class="bg-[#1C1D21] border border-white/10 rounded-2xl p-4 text-center text-xs text-slate-400">Buscando profesores verificados en ${state.activeRequest.district}...</div>`;
+        } else {
+          listEl.innerHTML = state.offers.map(off => {
+            const doc = TEACHERS_POOL.find(t => t.id === off.teacherId) || TEACHERS_POOL[0];
+            const matches = off.price <= state.activeRequest.price;
+            return `
+              <div class="bg-[#1C1D21] border border-white/10 hover:border-limeindrive/60 rounded-2xl p-3.5 space-y-2.5 animate-up">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <p class="font-display font-bold text-sm text-white">${doc.name}</p>
+                    <p class="text-[11px] text-limeindrive font-semibold">✓ Verificado A Ley · ★ ${doc.rating} (${doc.reviews})</p>
+                    <p class="text-[11px] text-slate-400">${off.distance} · ${off.eta} · ${doc.subjects}</p>
+                  </div>
+                  <div class="text-right shrink-0">
+                    <span class="text-[10px] font-bold ${matches ? "text-limeindrive" : "text-amber-400"} block">${matches ? "Acepta tarifa" : "Contraoferta"}</span>
+                    <span class="font-display font-extrabold text-xl text-white">S/ ${off.price}</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-white/10">
+                  <button type="button" onclick="openTeacherCredentialsModal('${doc.id}')" class="px-3 py-1.5 rounded-xl bg-[#2A2C32] hover:bg-[#34373F] text-xs font-bold text-slate-200 cursor-pointer">Credenciales</button>
+                  <button type="button" onclick="acceptOffer('${off.offerId}')" class="px-4 py-1.5 rounded-xl bg-limeindrive hover:bg-limehover text-[#121212] font-display font-extrabold text-xs cursor-pointer">Aceptar</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+        return;
+      }
+
+      defPanel.classList.remove("hidden");
+    }
+
+    // =========================================================================
+    // 7. TEACHER MODE ("Modo profesor") & YAPE/PLIN WALLET
+    // =========================================================================
+    function setTeacherRole(role) {
+      state.teacherRole = role;
+      const domBtn = document.getElementById("opt-prof-domicilio");
+      const aseBtn = document.getElementById("opt-tutor-asesor");
+      const domDot = document.getElementById("dot-domicilio");
+      const aseDot = document.getElementById("dot-asesor");
+
+      if (role === "domicilio") {
+        domBtn.className = "w-full bg-[#232429] border-2 border-limeindrive rounded-2xl px-4 py-3.5 flex items-center justify-between text-left transition cursor-pointer";
+        aseBtn.className = "w-full bg-[#232429] border border-white/10 hover:border-white/25 rounded-2xl px-4 py-3.5 flex items-center justify-between text-left transition cursor-pointer";
+        domDot.textContent = "●";
+        domDot.className = "text-limeindrive font-extrabold text-sm";
+        aseDot.textContent = "○";
+        aseDot.className = "text-slate-600 font-extrabold text-sm";
+      } else {
+        aseBtn.className = "w-full bg-[#232429] border-2 border-limeindrive rounded-2xl px-4 py-3.5 flex items-center justify-between text-left transition cursor-pointer";
+        domBtn.className = "w-full bg-[#232429] border border-white/10 hover:border-white/25 rounded-2xl px-4 py-3.5 flex items-center justify-between text-left transition cursor-pointer";
+        aseDot.textContent = "●";
+        aseDot.className = "text-limeindrive font-extrabold text-sm";
+        domDot.textContent = "○";
+        domDot.className = "text-slate-600 font-extrabold text-sm";
+      }
+      renderTeacherRequests();
+    }
+
+    function rechargeWallet(amount) {
+      state.wallet = +(state.wallet + amount).toFixed(2);
+      document.getElementById("wallet-balance-val").textContent = state.wallet.toFixed(2);
+      showToast(`Recarga Yape/Plin confirmada: +S/ ${amount.toFixed(2)}`, "success");
+    }
+
+    function renderTeacherRequests() {
+      const selectedDistrict = document.getElementById("radar-district-select").value;
+      const feed = document.getElementById("teacher-requests-feed");
+
+      let rows = [];
+      if (state.activeRequest && !state.confirmedClass) {
+        rows.push({ ...state.activeRequest, isLive: true });
+      }
+      rows = rows.concat(SAMPLE_REQUESTS);
+
+      if (selectedDistrict !== "ALL") {
+        rows = rows.filter(r => r.district === selectedDistrict);
+      }
+
+      if (rows.length === 0) {
+        feed.innerHTML = `<div class="text-xs text-slate-400 py-3 text-center">No hay solicitudes en ${selectedDistrict} en este momento.</div>`;
+        return;
+      }
+
+      feed.innerHTML = rows.map(r => `
+        <div class="bg-[#26272C] border ${r.isLive ? "border-limeindrive" : "border-white/10"} rounded-xl p-3 space-y-2">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${r.isLive ? "bg-limeindrive text-[#121212]" : "bg-[#18191D] text-slate-300"}">
+                ${r.isLive ? "EN VIVO" : r.district}
+              </span>
+              <p class="font-display font-bold text-xs text-white mt-1">${r.course} · ${r.level}</p>
+              <p class="text-[11px] text-slate-400">${r.district} · ${r.hours}h</p>
+            </div>
+            <span class="font-display font-extrabold text-sm text-limeindrive">S/ ${r.price}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="sendTeacherBid(${!!r.isLive}, ${r.price})" class="px-2.5 py-1 rounded-lg bg-limeindrive text-[#121212] font-extrabold text-[11px] cursor-pointer">Ofertar S/ ${r.price}</button>
+            <button type="button" onclick="sendTeacherBid(${!!r.isLive}, ${r.price + 5})" class="px-2.5 py-1 rounded-lg bg-[#18191D] hover:bg-[#32343C] text-white font-bold text-[11px] border border-white/10 cursor-pointer">Contraofertar S/ ${r.price + 5}</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function sendTeacherBid(isLive, amount) {
+      const fee = +(amount * 0.10).toFixed(2);
+      if (state.wallet < fee) {
+        showToast("Saldo insuficiente en tu billetera Yape/Plin para la comisión del 10%.", "warning");
+        return;
+      }
+      if (isLive && state.activeRequest) {
+        state.offers.unshift({
+          offerId: "OF-" + Date.now(),
+          teacherId: "t-1",
+          price: amount,
+          eta: "12 min",
+          distance: "1.2 km"
+        });
+        showToast(`Oferta de S/ ${amount} enviada al alumno.`, "success");
+      } else {
+        showToast(`Oferta de S/ ${amount} enviada para la clase en Trujillo.`, "success");
+      }
+    }
+
+    function openTeacherCredentialsModal(teacherId = "t-1") {
+      const doc = TEACHERS_POOL.find(t => t.id === teacherId) || TEACHERS_POOL[0];
+      document.getElementById("credentials-body").innerHTML = `
+        <div class="bg-[#26272C] rounded-2xl p-3.5 space-y-1.5 border border-white/10">
+          <p class="font-display font-bold text-sm text-white">${doc.name}</p>
+          <p class="text-limeindrive font-bold">✓ Verificado A Ley · ★ ${doc.rating} (${doc.reviews} reseñas)</p>
+          <p>DNI: <span class="font-mono text-white">${doc.dni}</span> · Distrito: <span class="text-white">${doc.district}</span></p>
+          <p>Respaldo: <span class="text-white">${doc.credential}</span></p>
+          <p>Cursos: <span class="text-white">${doc.subjects}</span></p>
+        </div>
+        <div class="bg-[#26272C] rounded-xl p-3 border border-white/5 text-[11px] italic text-slate-300">
+          "${doc.quote}"
+        </div>
+      `;
+      document.getElementById("modal-credentials").classList.remove("hidden");
+    }
+
+    // =========================================================================
+    // 8. DRAWER & MODALS HELPERS
+    // =========================================================================
+    function openDrawer() {
+      syncUserProfileUI();
+      document.getElementById("drawer-backdrop").classList.remove("hidden");
+    }
+
+    function closeDrawer() {
+      document.getElementById("drawer-backdrop").classList.add("hidden");
+    }
+
+    function openInfoModal(sectionKey) {
+      const titleEl = document.getElementById("info-modal-title");
+      const bodyEl = document.getElementById("info-modal-body");
+
+      if (sectionKey === "historial") {
+        titleEl.textContent = "Historial de clases";
+        bodyEl.innerHTML = state.history.map(item => `
+          <div class="bg-[#26272C] rounded-xl p-3 flex items-center justify-between border border-white/5">
+            <div>
+              <p class="font-bold text-white">${item.course}</p>
+              <p class="text-[11px] text-slate-400">${item.district} · ${item.date}</p>
+            </div>
+            <span class="font-display font-extrabold text-limeindrive">${item.price}</span>
+          </div>
+        `).join("");
+      } else if (sectionKey === "materiales") {
+        titleEl.textContent = "Materiales de estudio";
+        bodyEl.innerHTML = `
+          <div class="bg-[#26272C] rounded-xl p-3 border border-white/5">
+            <p class="font-bold text-white">Guías de práctica · Trujillo</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Álgebra, Física, Química, Comunicación e Inglés.</p>
+          </div>
+          <div class="bg-[#26272C] rounded-xl p-3 border border-white/5">
+            <p class="font-bold text-white">Fichas de refuerzo escolar</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Apoyo directo para tareas y evaluaciones.</p>
+          </div>
+        `;
+      } else if (sectionKey === "notificaciones") {
+        titleEl.textContent = "Notificaciones (2)";
+        bodyEl.innerHTML = `
+          <div class="bg-[#26272C] rounded-xl p-3 border-l-4 border-limeindrive">
+            <p class="font-bold text-white">Cobertura en los 11 distritos de Trujillo</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Profesores verificados listos para clases a domicilio.</p>
+          </div>
+          <div class="bg-[#26272C] rounded-xl p-3 border-l-4 border-amber-400">
+            <p class="font-bold text-white">Usa tu PIN de 4 dígitos al recibir al profesor</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Mayor seguridad para alumnos y familias.</p>
+          </div>
+        `;
+      } else if (sectionKey === "seguridad") {
+        titleEl.textContent = "Seguridad en Lurnedia";
+        bodyEl.innerHTML = `<p>Todos los docentes pasan verificación de identidad, antecedentes y respaldo académico, y cada clase confirmada incluye PIN de llegada a domicilio.</p>`;
+      } else if (sectionKey === "terms") {
+        titleEl.textContent = "Términos de Uso";
+        bodyEl.innerHTML = `<p>Al utilizar Lurnedia en Trujillo, alumnos y docentes negocian tarifas transparentes para clases particulares y cumplen las normas de seguridad y respeto.</p>`;
+      } else if (sectionKey === "privacy") {
+        titleEl.textContent = "Política de Privacidad";
+        bodyEl.innerHTML = `<p>Tu clave rápida permanece en tu dispositivo y tu ubicación se utiliza para conectar clases y proteger el trayecto en Trujillo.</p>`;
+      } else {
+        titleEl.textContent = sectionKey.charAt(0).toUpperCase() + sectionKey.slice(1);
+        bodyEl.innerHTML = `<p><strong>Lurnedia Trujillo</strong> · Atención en Trujillo Centro, Víctor Larco Herrera, La Esperanza, El Porvenir, Florencia de Mora, Huanchaco, Moche, Salaverry, Laredo, Simbal y Poroto.</p>`;
+      }
+
+      document.getElementById("modal-info").classList.remove("hidden");
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add("hidden");
+    }
+
+    function showToast(msg, tone = "info") {
+      const host = document.getElementById("toast-host");
+      const toast = document.createElement("div");
+      const accent = tone === "success" ? "border-limeindrive" : tone === "warning" ? "border-amber-400" : "border-slate-500";
+      toast.className = `bg-[#18191D] text-white border-l-4 ${accent} border border-white/10 rounded-xl px-3.5 py-2.5 shadow-2xl text-xs font-semibold transition-opacity duration-300`;
+      toast.textContent = msg;
+      host.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Boot app cleanly at initial registration screen
+    window.addEventListener("DOMContentLoaded", () => {
+      navigateToScreen("screen-1-register");
+    });
+  </script>
+</body>
+</html>
